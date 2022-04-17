@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "cortex-xdr.fullname" . }}
+  labels: {{- include "cortex-xdr.labels" . | nindent 4 }}
+
+spec:
+  selector:
+    matchLabels: {{- include "cortex-xdr.selectorLabels" . | nindent 6 }}
+
+  updateStrategy:
+    type: {{ .Values.daemonset.updateStrategy }}
+
+  template:
+    metadata:
+      labels: {{- include "cortex-xdr.labels" . | nindent 8 }}
+
+      annotations:
+        {{ toYaml .Values.daemonset.podAnnotations | indent 8 }}
+
+    spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "cortex-xdr.serviceAccountName" . }}
+      {{- end }}
+
+      {{- with .Values.daemonset.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      hostNetwork: true
+      hostPID: true
+      hostIPC: true
+
+      {{- with .Values.daemonset.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      containers:
+      - name: cortex-agent
+        image: {{ .Values.daemonset.image.repository }}:{{ .Values.daemonset.image.tag }}
+        imagePullPolicy: {{ .Values.daemonset.image.pullPolicy }}
+
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+            - SYS_CHROOT
+            - SYS_MODULE
+            - SYS_PTRACE
+            - SYS_RESOURCE
+            - SYS_RAWIO
+            - DAC_OVERRIDE
+            - DAC_READ_SEARCH
+            - NET_ADMIN
+            - NET_RAW
+            - IPC_LOCK
+            - FOWNER
+            - KILL
+            - SETGID
+            - SETUID
+
+        env:
+        - name: XDR_HOST_ROOT
+          value: "/host-fs"
+        - name: XDR_POD_INFO
+          value: "/var/run/pod-info"
+        - name: XDR_CLUSTER_NAME_URL
+          value: "metadata2"
+        - name: XDR_PROXY_LIST
+          value: {{ .Values.agent.proxyList | quote}}
+
+        volumeMounts:
+
+        - name: host-fs
+          mountPath: /host-fs
+          readOnly: true
+
+        - name: var-log
+          mountPath: /var/log
+
+        - name: host-km-directory
+          mountPath: /lib/modules
+
+        - name: pod-info
+          mountPath: /var/run/pod-info
+          readOnly: true
+
+        - name: agent-ids
+          mountPath: /etc/traps
+
+        - name: deployment-secrets
+          mountPath: /opt/traps/config/deployment
+          readOnly: true
+
+        resources:
+          {{ toYaml .Values.daemonset.image.resources | indent 10 }}
+
+      terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriodSeconds }}
+
+      volumes:
+      - name: host-fs
+        hostPath:
+          path: /
+          type: Directory
+
+      - name: var-log
+        hostPath:
+            path: /var/log
+            type: Directory
+
+      - name: host-km-directory
+        hostPath:
+          path: /lib/modules
+          type: Directory
+
+      - name: pod-info
+        downwardAPI:
+          items:
+          - path: uid
+            fieldRef:
+              fieldPath: metadata.uid
+          - path: name
+            fieldRef:
+              fieldPath: metadata.name
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: annotations
+            fieldRef:
+              fieldPath: metadata.annotations
+
+      - name: agent-ids
+        hostPath:
+          path: /etc/traps
+          type: DirectoryOrCreate
+
+      {{- if .Values.rbac.create }}
+      - name: deployment-secrets
+        secret:
+          secretName: {{ include "cortex-xdr.deploymentSecretName" . }}
+      {{- end }}
+
+      imagePullSecrets:
+      - name: {{ include "cortex-xdr.dockerPullSecretName" . }}
