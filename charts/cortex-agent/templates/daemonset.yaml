@@ -95,7 +95,7 @@ spec:
           readOnly: true
 
         resources:
-          {{ toYaml .Values.daemonset.image.resources | indent 10 }}
+{{ toYaml .Values.daemonset.resources | indent 10 }}
 
       terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriodSeconds }}
 
