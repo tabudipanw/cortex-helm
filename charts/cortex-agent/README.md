@@ -1,5 +1,11 @@
 # Cortex XDR Helm Chart
 
+## Chart versions
+
+| Chart version | Agent version |
+|---------------|---------------|
+| 1.0.0         | >=7.5         |
+
 ## Installing Cortex XDR helm chart
 
 ### Add the Cortex XDR helm repository
@@ -17,13 +23,6 @@ helm repo list | grep paloaltonetworks
 helm search repo --versions paloaltonetworks
 ```
 
-### Install/Upgrade the helm chart
-
-* Create a new namespace (The name `cortex-xdr` is not mandatory and can be changed):
-```
-kubectl create namespace cortex-xdr
-```
-
 * Parameters **required** for the chart installation (not for upgrade):
     - docker config json value or name of the secret that contains the value.
     - image repository url.
@@ -33,16 +32,19 @@ kubectl create namespace cortex-xdr
 
 #### Notes
 
+- Namespace can be whatever you'd like (`cortex-xdr` is not mandatory).
+- If the specified namespace doesn't exist, it will be created by helm.
 - If no namespace is set in the installation command, the namespace will be `default`.
-- New docker pull secret is created by the chart so the chart expects to receive its value,
-this can be canceled by setting the parameters `secret.dockerPullSecret.create` to false (then the name of the secret will need to be supplied).
-- On upgrade, the only required parameter is `namespace`. Specifying other parameters will override the existing values.
+
+**Notice image tag is also the agent version**
 
 Classic installation command:
 ```
 helm upgrade --install <release_name> <helm_chart> \
   --namespace=cortex-xdr \
+  --create-namespace \
   --set daemonset.image.repository=<repository_url> \
+  --set daemonset.image.tag=<agent_version_tag> \
   --set agent.distributionId=<distribution_id> \
   --set dockerPullSecret.create=true \
   --set dockerPullSecret.value=<docker_config_json_secret>
@@ -53,8 +55,10 @@ Note: to pick a specific version, use the `--version` flag.
 If the secret was created seperately then you can just supply the secret name (make sure the secret and the agent are in the same namespace):
 ```
 helm upgrade --install <release_name> <helm chart> \
-  --namespace=<namespace> \
+  --namespace=cortex-xdr \
+  --create-namespace \
   --set daemonset.image.repository=<repository_url> \
+  --set daemonset.image.tag=<agent_version> \
   --set agent.distributionId=<distribution_id> \
   --set dockerPullSecret.name=<docker_config_json_secret>
 ```
@@ -66,6 +70,7 @@ helm repo update
 
 ```
 helm upgrade --install <release_name> <helm_chart> --reuse-values \
+  --set daemonset.image.tag=<new_agent_version_tag> \
   --namespace=<namespace>
 ```
 
