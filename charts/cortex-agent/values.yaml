@@ -68,7 +68,7 @@ daemonset:
     # Only pull image if it doesn't exist in cache
     pullPolicy: IfNotPresent
 
-    tag: "7.8.0"
+    tag: "latest"
 
   # These values are the recommended values for cortex agent
   # and are not recommended to change!
