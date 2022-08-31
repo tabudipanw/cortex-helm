@@ -16,7 +16,7 @@ spec:
       labels: {{- include "cortex-xdr.labels" . | nindent 8 }}
 
       annotations:
-        {{ toYaml .Values.daemonset.podAnnotations | indent 8 }}
+{{ toYaml .Values.daemonset.podAnnotations | indent 8 }}
 
     spec:
       {{- if .Values.serviceAccount.create }}
