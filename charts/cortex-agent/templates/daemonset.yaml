@@ -37,6 +37,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
+      {{- with .Values.daemonset.affinity }}
+      affinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+
       {{- if .Values.daemonset.priorityClassName }}
       priorityClassName: {{ .Values.daemonset.priorityClassName }}
       {{- end }}
