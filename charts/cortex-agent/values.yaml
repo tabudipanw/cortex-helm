@@ -10,6 +10,10 @@ dockerPullSecret:
   # In case you want to set the value from here, set `create` to true
   value: ""
 
+deploymentSecret:
+  # Set to "false" to inject distributionId externally, e.g. Vault-agent-injector
+  create: false
+
 serviceAccount:
   # create/don't create service account
   create: true
@@ -45,6 +49,8 @@ daemonset:
 
   podAnnotations:
     container.apparmor.security.beta.kubernetes.io/cortex-agent: unconfined
+
+  affinity: {}
 
   priorityClassName: ""
 

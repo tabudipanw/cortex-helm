@@ -16,7 +16,7 @@ spec:
       labels: {{- include "cortex-xdr.labels" . | nindent 8 }}
 
       annotations:
-        {{ toYaml .Values.daemonset.podAnnotations | indent 8 }}
+{{ toYaml .Values.daemonset.podAnnotations | indent 8 }}
 
     spec:
       {{- if .Values.serviceAccount.create }}
@@ -35,6 +35,10 @@ spec:
       {{- with .Values.daemonset.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.daemonset.affinity }}
+      affinity: {{- toYaml . | nindent 8 }}
       {{- end }}
 
       {{- if .Values.daemonset.priorityClassName }}
@@ -94,9 +98,11 @@ spec:
         - name: agent-ids
           mountPath: /etc/traps
 
+        {{- if .Values.deploymentSecret.create }}
         - name: deployment-secrets
           mountPath: /opt/traps/config/deployment
           readOnly: true
+        {{- end }}
 
         resources:
 {{ toYaml .Values.daemonset.resources | indent 10 }}
@@ -140,9 +146,11 @@ spec:
           path: /etc/traps
           type: DirectoryOrCreate
 
+      {{- if .Values.deploymentSecret.create }}
       - name: deployment-secrets
         secret:
           secretName: {{ include "cortex-xdr.deploymentSecretName" . }}
+      {{- end }}
 
       imagePullSecrets:
       - name: {{ include "cortex-xdr.dockerPullSecretName" . }}
