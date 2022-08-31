@@ -94,9 +94,11 @@ spec:
         - name: agent-ids
           mountPath: /etc/traps
 
+        {{- if .Values.deploymentSecret.create }}
         - name: deployment-secrets
           mountPath: /opt/traps/config/deployment
           readOnly: true
+        {{- end }}
 
         resources:
 {{ toYaml .Values.daemonset.resources | indent 10 }}
@@ -140,9 +142,11 @@ spec:
           path: /etc/traps
           type: DirectoryOrCreate
 
+      {{- if .Values.deploymentSecret.create }}
       - name: deployment-secrets
         secret:
           secretName: {{ include "cortex-xdr.deploymentSecretName" . }}
+      {{- end }}
 
       imagePullSecrets:
       - name: {{ include "cortex-xdr.dockerPullSecretName" . }}
