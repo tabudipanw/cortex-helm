@@ -12,7 +12,7 @@ dockerPullSecret:
 
 deploymentSecret:
   # Set to "false" to inject distributionId externally, e.g. Vault-agent-injector
-  create: false
+  create: true
 
 serviceAccount:
   # create/don't create service account
