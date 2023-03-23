@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "cortex-xdr.fullname" . }}
+  name: {{ include "cortex-xdr.fullname" . }}-{{ .Release.Namespace }}
   labels: {{- include "cortex-xdr.labels" . | nindent 4 }}
 subjects:
 - kind: ServiceAccount
