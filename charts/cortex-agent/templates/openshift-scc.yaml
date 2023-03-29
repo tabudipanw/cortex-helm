@@ -2,7 +2,7 @@
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
-  name: {{ include "cortex-xdr.fullname" . }}
+  name: {{ include "cortex-xdr.fullname" . }}-{{ .Release.Namespace }}
 allowHostDirVolumePlugin: true
 allowPrivilegedContainer: true
 allowHostIPC: true
