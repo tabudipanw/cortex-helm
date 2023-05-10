@@ -2,9 +2,13 @@
 
 ## Chart versions
 
-| Chart version | Agent version |
-|---------------|---------------|
+| Chart version | Agent version | Notes
+|---------------|---------------|--------------------------------------------------
 | 1.0.0         | >=7.5         |
+| 1.1.0         | >=7.5         |
+| 1.2.0         | >=7.5         |
+| 1.3.0         | >=7.5         |
+| 1.4.0         | >=7.5         | Support for endpointTags from agent 8.1
 
 ## Installing Cortex XDR helm chart
 
@@ -77,17 +81,20 @@ helm upgrade --install <release_name> <helm_chart> --reuse-values \
 Even when using `--reuse-values` (which uses the values of the previous installation) you can still override any value that you want with the `--set` option.
 
 ### More installation Parameters
-|Parameter                               | Description                                                                                                |
-|----------------------------------------|------------------------------------------------------------------------------------------------------------|
+|Parameter                               | Description                                                                                                | Notes
+|----------------------------------------|------------------------------------------------------------------------------------------------------------|-------------
 | `daemonset.image.repository`           | Cortex image Repository URL (Required)                                                                     |
 | `dockerPullSecret.create`              | Create/Don't create docker config json pull secret and insert the value in it                              |
 | `dockerPullSecret.value`               | Docker config json value for the docker pull secret (Required)                                             |
 | `dockerPullSecret.name`                | Docker config json secret name (Required if value isn't supplied)                                          |
 | `agent.distributionId`                 | Distribution id of the tenant (Required)                                                                   |
 | `agent.distributionServer`             | Distribution server URL (set by default in the image)                                                      |
-| `agent.proxyList`                      | List of proxies that the agent will use (e.g `--set daemonset.proxyList="10.0.0.1:8000,10.0.0.2:9000"`)    |
+| `agent.proxyList`                      | List of proxies that the agent will use (e.g `--set agent.proxyList="10.0.0.1:8000\,10.0.0.2:9000"`)       |
+| `agent.endpointTags`                   | List of tags describing the endpoint (e.g `--set agent.endpointTags="main\,dev-machine1\,test\ 123"`)      | Since 1.4.0
 | `agent.nodeSelector`                   | Node selector (e.g `--set daemonset.nodeSelector.<key=value>`, each key+value will need their own `--set`) |
 | `serviceAccount.openshift.scc.create`  | Enable `SecurityConstraintsContext` for openshift platform (Required when installing on openshift          |
+
+Note: Helm requires commas in arguments to be escaped.
 
 ## Uninstalling Cortex XDR helm chart
 

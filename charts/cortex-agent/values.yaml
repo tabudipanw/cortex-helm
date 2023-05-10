@@ -42,6 +42,9 @@ agent:
   # Proxies for the agent to use, for example: 10.10.10.1:8080,10.10.10.2:8080
   proxyList: ""
 
+  # Tags describing the endpoint, for example: "main,dev-machine1,test 123"
+  endpointTags: ""
+
 daemonset:
   # node labels to match pods with
   nodeSelector:
