@@ -51,6 +51,10 @@ spec:
         imagePullPolicy: {{ .Values.daemonset.image.pullPolicy }}
 
         securityContext:
+          {{- if .Values.bottlerocketos.create }}
+          seLinuxOptions:
+            type: super_t
+          {{- end }}
           capabilities:
             add:
             - SYS_ADMIN
@@ -80,6 +84,10 @@ spec:
           value: {{ .Values.agent.proxyList | quote }}
         - name: XDR_ENDPOINT_TAGS
           value: {{ .Values.agent.endpointTags | quote }}
+        {{- if .Values.agent.containerScanMode.enable }}
+        - name: XDR_ENABLE_CONTAINER_SCAN_MODE
+          value: "{{- .Values.agent.containerScanMode.enable }}"
+        {{- end }}
 
         volumeMounts:
 
@@ -119,8 +127,13 @@ spec:
 
       - name: var-log
         hostPath:
+            {{- if .Values.bottlerocketos.create }}
+            path: /local/traps/var/log
+            type: DirectoryOrCreate
+            {{- else }}
             path: /var/log
             type: Directory
+            {{- end }}
 
       - name: host-km-directory
         hostPath:
@@ -145,7 +158,11 @@ spec:
 
       - name: agent-ids
         hostPath:
+          {{- if .Values.bottlerocketos.create }}  
+          path: /local/traps/etc/traps
+          {{- else }}
           path: /etc/traps
+          {{- end }}
           type: DirectoryOrCreate
 
       {{- if .Values.deploymentSecret.create }}
