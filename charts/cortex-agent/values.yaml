@@ -27,6 +27,10 @@ serviceAccount:
     scc:
       create: false
 
+bottlerocketos:
+  # Deploy on BotllerocketOS platform
+  create: false
+
 rbac:
   # create/don't create Cluster Role and Cluster Role Bindings
   create: true
@@ -44,6 +48,10 @@ agent:
 
   # Tags describing the endpoint, for example: "main,dev-machine1,test 123"
   endpointTags: ""
+
+  # Enable an internal mode with a reduced feature set
+  containerScanMode:
+    enable: false
 
 daemonset:
   # node labels to match pods with

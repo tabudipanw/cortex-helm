@@ -8,7 +8,7 @@
 | 1.1.0         | >=7.5         |
 | 1.2.0         | >=7.5         |
 | 1.3.0         | >=7.5         |
-| 1.4.0         | >=7.5         | Support for endpointTags from agent 8.1
+| 1.4.0         | >=7.5         | Support for endpointTags and containerScanMode from agent 8.1
 
 ## Installing Cortex XDR helm chart
 
@@ -92,7 +92,9 @@ Even when using `--reuse-values` (which uses the values of the previous installa
 | `agent.proxyList`                      | List of proxies that the agent will use (e.g `--set agent.proxyList="10.0.0.1:8000\,10.0.0.2:9000"`)       |
 | `agent.endpointTags`                   | List of tags describing the endpoint (e.g `--set agent.endpointTags="main\,dev-machine1\,test\ 123"`)      | Since 1.4.0
 | `agent.nodeSelector`                   | Node selector (e.g `--set daemonset.nodeSelector.<key=value>`, each key+value will need their own `--set`) |
-| `serviceAccount.openshift.scc.create`  | Enable `SecurityConstraintsContext` for openshift platform (Required when installing on openshift          |
+| `agent.containerScanMode.enable`       | Enable the container scan mode (for pcc)                                                                   | Since 1.4.0
+| `serviceAccount.openshift.scc.create`  | Enable `SecurityConstraintsContext` for openshift platform (Required when installing on openshift)         |
+| `bottlerocketos.create`                | Support for BottlerocketOS platform (Required when installing on BottlerocketOS)                           |
 
 Note: Helm requires commas in arguments to be escaped.
 
