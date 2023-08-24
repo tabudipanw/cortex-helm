@@ -88,6 +88,8 @@ spec:
         - name: XDR_ENABLE_CONTAINER_SCAN_MODE
           value: "{{- .Values.agent.containerScanMode.enable }}"
         {{- end }}
+        - name: XDR_CLUSTER_NAME
+          value: {{ .Values.agent.clusterName | quote }}
 
         volumeMounts:
 

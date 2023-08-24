@@ -53,6 +53,9 @@ agent:
   containerScanMode:
     enable: false
 
+  # Name of the kuberenetes cluster - optional
+  clusterName: ""
+
 daemonset:
   # node labels to match pods with
   nodeSelector:

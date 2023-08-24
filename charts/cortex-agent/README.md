@@ -9,6 +9,7 @@
 | 1.2.0         | >=7.5         |
 | 1.3.0         | >=7.5         |
 | 1.4.0         | >=7.5         | Support for endpointTags and containerScanMode from agent 8.1
+| 1.5.0         | >=7.5         | Support for optional cluster name from agent 8.2
 
 ## Installing Cortex XDR helm chart
 
@@ -95,6 +96,7 @@ Even when using `--reuse-values` (which uses the values of the previous installa
 | `agent.containerScanMode.enable`       | Enable the container scan mode (for pcc)                                                                   | Since 1.4.0
 | `serviceAccount.openshift.scc.create`  | Enable `SecurityConstraintsContext` for openshift platform (Required when installing on openshift)         |
 | `bottlerocketos.create`                | Support for BottlerocketOS platform (Required when installing on BottlerocketOS)                           |
+| `agent.clusterName`                    | Name of the kuberenets cluster, will be used as part of the information sent to the server                 | Since 1.5.0, agent >= 8.2
 
 Note: Helm requires commas in arguments to be escaped.
 
