@@ -84,10 +84,6 @@ spec:
           value: {{ .Values.agent.proxyList | quote }}
         - name: XDR_ENDPOINT_TAGS
           value: {{ .Values.agent.endpointTags | quote }}
-        {{- if .Values.agent.containerScanMode.enable }}
-        - name: XDR_ENABLE_CONTAINER_SCAN_MODE
-          value: "{{- .Values.agent.containerScanMode.enable }}"
-        {{- end }}
         - name: XDR_CLUSTER_NAME
           value: {{ .Values.agent.clusterName | quote }}
 
@@ -160,7 +156,7 @@ spec:
 
       - name: agent-ids
         hostPath:
-          {{- if .Values.bottlerocketos.create }}  
+          {{- if .Values.bottlerocketos.create }}
           path: /local/traps/etc/traps
           {{- else }}
           path: /etc/traps
