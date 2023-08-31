@@ -49,10 +49,6 @@ agent:
   # Tags describing the endpoint, for example: "main,dev-machine1,test 123"
   endpointTags: ""
 
-  # Enable an internal mode with a reduced feature set
-  containerScanMode:
-    enable: false
-
   # Name of the kuberenetes cluster - optional
   clusterName: ""
 
