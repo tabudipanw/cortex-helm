@@ -27,9 +27,11 @@ serviceAccount:
     scc:
       create: false
 
-bottlerocketos:
-  # Deploy on BotllerocketOS platform
-  create: false
+platform:
+  # Deploy on TalOS platform
+  talos: false
+  # Deploy on GCOS platform
+  gcos: false
 
 rbac:
   # create/don't create Cluster Role and Cluster Role Bindings

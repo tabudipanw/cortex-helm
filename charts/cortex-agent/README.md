@@ -94,7 +94,8 @@ Even when using `--reuse-values` (which uses the values of the previous installa
 | `agent.endpointTags`                   | List of tags describing the endpoint (e.g `--set agent.endpointTags="main\,dev-machine1\,test\ 123"`)      | Since 1.4.0
 | `agent.nodeSelector`                   | Node selector (e.g `--set daemonset.nodeSelector.<key=value>`, each key+value will need their own `--set`) |
 | `serviceAccount.openshift.scc.create`  | Enable `SecurityConstraintsContext` for openshift platform (Required when installing on openshift)         |
-| `bottlerocketos.create`                | Support for BottlerocketOS platform (Required when installing on BottlerocketOS)                           |
+| `platform.talos`                       | Support for TalOS platform (Required when installing on TalOS)                                             | Since 1.5.0, agent >= 8.2
+| `platform.gcos`                        | Support for GCOS (Google Container-Optimized OS) platform (Required when installing on GCOS)               | Since 1.5.0, agent >= 8.2
 | `agent.clusterName`                    | Name of the kuberenets cluster, will be used as part of the information sent to the server                 | Since 1.5.0, agent >= 8.2
 
 Note: Helm requires commas in arguments to be escaped.

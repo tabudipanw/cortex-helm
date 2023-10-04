@@ -3,6 +3,9 @@ kind: DaemonSet
 metadata:
   name: {{ include "cortex-xdr.fullname" . }}
   labels: {{- include "cortex-xdr.labels" . | nindent 4 }}
+  {{- if .Values.platform.talos }}
+    pod-security.kubernetes.io/enforce: privileged
+  {{- end }}
 
 spec:
   selector:
@@ -51,15 +54,14 @@ spec:
         imagePullPolicy: {{ .Values.daemonset.image.pullPolicy }}
 
         securityContext:
-          {{- if .Values.bottlerocketos.create }}
-          seLinuxOptions:
-            type: super_t
-          {{- end }}
           capabilities:
             add:
             - SYS_ADMIN
+            - SYSLOG
             - SYS_CHROOT
+            {{- if not .Values.platform.talos }}
             - SYS_MODULE
+            {{- end }}
             - SYS_PTRACE
             - SYS_RESOURCE
             - SYS_RAWIO
@@ -84,6 +86,10 @@ spec:
           value: {{ .Values.agent.proxyList | quote }}
         - name: XDR_ENDPOINT_TAGS
           value: {{ .Values.agent.endpointTags | quote }}
+        {{- if .Values.platform.talos }}
+        - name: XDR_BPF_DEBUGFS_MOUNT
+          value: {{ .Values.platform.talos | quote }}
+        {{- end }}
         - name: XDR_CLUSTER_NAME
           value: {{ .Values.agent.clusterName | quote }}
 
@@ -103,8 +109,10 @@ spec:
           mountPath: /var/run/pod-info
           readOnly: true
 
+        {{- if not .Values.platform.talos }}
         - name: agent-ids
           mountPath: /etc/traps
+        {{- end }}
 
         {{- if .Values.deploymentSecret.create }}
         - name: deployment-secrets
@@ -125,13 +133,8 @@ spec:
 
       - name: var-log
         hostPath:
-            {{- if .Values.bottlerocketos.create }}
-            path: /local/traps/var/log
-            type: DirectoryOrCreate
-            {{- else }}
             path: /var/log
             type: Directory
-            {{- end }}
 
       - name: host-km-directory
         hostPath:
@@ -154,14 +157,17 @@ spec:
             fieldRef:
               fieldPath: metadata.annotations
 
+      {{- if .Values.platform.gcos }}
       - name: agent-ids
         hostPath:
-          {{- if .Values.bottlerocketos.create }}
-          path: /local/traps/etc/traps
-          {{- else }}
-          path: /etc/traps
-          {{- end }}
+          path: /var/traps/etc/traps
           type: DirectoryOrCreate
+      {{- else if not .Values.platform.talos }}
+      - name: agent-ids
+        hostPath:
+          path: /etc/traps
+          type: DirectoryOrCreate
+      {{- end }}
 
       {{- if .Values.deploymentSecret.create }}
       - name: deployment-secrets
