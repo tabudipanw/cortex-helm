@@ -4,6 +4,10 @@ metadata:
   name: {{ include "cortex-xdr.fullname" . }}
   labels: {{- include "cortex-xdr.labels" . | nindent 4 }}
   namespace: {{ .Values.namespace.name }}
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
+    pod-security.kubernetes.io/audit: privileged
+
 spec:
   selector:
     matchLabels: {{- include "cortex-xdr.selectorLabels" . | nindent 6 }}
