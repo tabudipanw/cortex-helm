@@ -37,17 +37,14 @@ helm search repo --versions paloaltonetworks
 
 #### Notes
 
+- If no namespace is set in the installation command, the namespace will be `cortex-xdr`.
 - Namespace can be whatever you'd like (`cortex-xdr` is not mandatory).
-- If the specified namespace doesn't exist, it will be created by helm.
-- If no namespace is set in the installation command, the namespace will be `default`.
 
 **Notice image tag is also the agent version**
 
 Classic installation command:
 ```
 helm upgrade --install <release_name> <helm_chart> \
-  --namespace=cortex-xdr \
-  --create-namespace \
   --set daemonset.image.repository=<repository_url> \
   --set daemonset.image.tag=<agent_version_tag> \
   --set agent.distributionId=<distribution_id> \
@@ -60,8 +57,6 @@ Note: to pick a specific version, use the `--version` flag.
 If the secret was created seperately then you can just supply the secret name (make sure the secret and the agent are in the same namespace):
 ```
 helm upgrade --install <release_name> <helm chart> \
-  --namespace=cortex-xdr \
-  --create-namespace \
   --set daemonset.image.repository=<repository_url> \
   --set daemonset.image.tag=<agent_version> \
   --set agent.distributionId=<distribution_id> \
@@ -76,7 +71,6 @@ helm repo update
 ```
 helm upgrade --install <release_name> <helm_chart> --reuse-values \
   --set daemonset.image.tag=<new_agent_version_tag> \
-  --namespace=<namespace>
 ```
 
 Even when using `--reuse-values` (which uses the values of the previous installation) you can still override any value that you want with the `--set` option.
@@ -97,11 +91,13 @@ Even when using `--reuse-values` (which uses the values of the previous installa
 | `platform.talos`                       | Support for TalOS platform (Required when installing on TalOS)                                             | Since 1.5.0, agent >= 8.2
 | `platform.gcos`                        | Support for GCOS (Google Container-Optimized OS) platform (Required when installing on GCOS)               | Since 1.5.0, agent >= 8.2
 | `agent.clusterName`                    | Name of the kuberenets cluster, will be used as part of the information sent to the server                 | Since 1.5.0, agent >= 8.2
+| `namespace.name`                       | Name of the namespace the agent resides on                                                                 | Since 1.6.0
+| `namespace.create`                     | Create/Don't create namespace for the agent                                                                | Since 1.6.0
 
 Note: Helm requires commas in arguments to be escaped.
 
 ## Uninstalling Cortex XDR helm chart
 
 ```
-helm uninstall <release_name> --namespace <namespace>
+helm uninstall <release_name>
 ```

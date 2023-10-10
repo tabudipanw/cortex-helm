@@ -3,10 +3,7 @@ kind: DaemonSet
 metadata:
   name: {{ include "cortex-xdr.fullname" . }}
   labels: {{- include "cortex-xdr.labels" . | nindent 4 }}
-  {{- if .Values.platform.talos }}
-    pod-security.kubernetes.io/enforce: privileged
-  {{- end }}
-
+  namespace: {{ .Values.namespace.name }}
 spec:
   selector:
     matchLabels: {{- include "cortex-xdr.selectorLabels" . | nindent 6 }}

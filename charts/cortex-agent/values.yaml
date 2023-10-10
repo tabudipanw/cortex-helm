@@ -99,3 +99,7 @@ daemonset:
     requests:
       cpu: "200m"
       memory: "600Mi"
+
+namespace:
+  create: true
+  name: "cortex-xdr"
