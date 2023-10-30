@@ -2,7 +2,7 @@
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
-  name: {{ include "cortex-xdr.fullname" . }}-{{ .Release.Namespace }}
+  name: {{ include "cortex-xdr.fullname" . }}-{{ .Values.namespace.name }}
 allowHostDirVolumePlugin: true
 allowPrivilegedContainer: true
 allowHostIPC: true
@@ -37,8 +37,8 @@ seLinuxContext:
 supplementalGroups:
   type: RunAsAny
 users:
-  - system:serviceaccount:{{ .Release.Namespace }}
-  - system:serviceaccount:{{ .Release.Namespace }}:{{ include "cortex-xdr.serviceAccountName" . }}
+  - system:serviceaccount:{{ .Values.namespace.name }}
+  - system:serviceaccount:{{ .Values.namespace.name }}:{{ include "cortex-xdr.serviceAccountName" . }}
 volumes:
   - hostPath
   - secret

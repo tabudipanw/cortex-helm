@@ -65,6 +65,14 @@ Secret names
 {{- include "cortex-xdr.fullname" . }}-deployment
 {{- end }}
 
+{{- define "cortex-xdr.clusterRoleBindingName" -}}
+{{- include "cortex-xdr.fullname" . }}-clusterrolebinding
+{{- end }}
+
+{{- define "cortex-xdr.clusterRoleName" -}}
+{{- include "cortex-xdr.fullname" . }}-clusterrole
+{{- end }}
+
 {{/*
 Create the name of the service account to use
 */}}
