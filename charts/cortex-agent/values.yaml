@@ -103,3 +103,4 @@ daemonset:
 namespace:
   create: true
   name: "cortex-xdr"
+
