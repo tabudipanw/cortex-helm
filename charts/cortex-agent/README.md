@@ -10,6 +10,8 @@
 | 1.3.0         | >=7.5         |
 | 1.4.0         | >=7.5         | Support for endpointTags from agent 8.1
 | 1.5.0         | >=7.5         | Support for optional cluster name from agent 8.2
+| 1.6.0         | >=7.5         |
+| 1.6.1         | >=7.5         | Namespace is created by the chart and no longer by helm itself. Therefore the helm namespace will be `default` (unless chosen otherwise).
 
 ## Installing Cortex XDR helm chart
 
@@ -70,7 +72,8 @@ helm repo update
 
 ```
 helm upgrade --install <release_name> <helm_chart> --reuse-values \
-  --set daemonset.image.tag=<new_agent_version_tag> \
+  --namespace=<namespace> \
+  --set daemonset.image.tag=<new_agent_version_tag>
 ```
 
 Even when using `--reuse-values` (which uses the values of the previous installation) you can still override any value that you want with the `--set` option.
