@@ -12,6 +12,7 @@
 | 1.5.0         | >=7.5         | Support for optional cluster name from agent 8.2
 | 1.6.0         | >=7.5         |
 | 1.6.1         | >=7.5         | Namespace is created by the chart and no longer by helm itself. Therefore the helm namespace will be `default` (unless chosen otherwise).
+| 1.6.2         | >=7.5         |
 
 ## Installing Cortex XDR helm chart
 
