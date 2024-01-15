@@ -10,6 +10,6 @@ subjects:
   namespace: {{ .Values.namespace.name }}
 roleRef:
   kind: ClusterRole
-  name: {{ include "cortex-xdr.fullname" . }}
+  name: {{ include "cortex-xdr.clusterRoleName" . }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}
