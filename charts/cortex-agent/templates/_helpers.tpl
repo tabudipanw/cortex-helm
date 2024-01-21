@@ -83,3 +83,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the path of the /var/log volume mount on the host fs
+*/}}
+{{- define "cortex-xdr.XdrVarLogHostPath" -}}
+{{- if .Values.platform.bottlerocket -}}
+/local/traps/var/log
+{{- else -}}
+/var/log
+{{- end }}
+{{- end }}
