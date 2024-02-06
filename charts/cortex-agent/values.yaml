@@ -32,6 +32,8 @@ platform:
   talos: false
   # Deploy on GCOS platform
   gcos: false
+  # Deploy on bottlerocket platform
+  bottlerocket: false
 
 rbac:
   # create/don't create Cluster Role and Cluster Role Bindings
