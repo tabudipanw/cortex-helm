@@ -13,7 +13,7 @@
 | 1.6.0         | >=7.5         |
 | 1.6.1         | >=7.5         | Namespace is created by the chart and no longer by helm itself. Therefore the helm namespace will be `default` (unless chosen otherwise).
 | 1.6.2         | >=7.5         |
-| 1.6.3         | >=7.5         |
+| 1.7.0         | >=7.5         | Bottlerocket support
 
 ## Installing Cortex XDR helm chart
 
